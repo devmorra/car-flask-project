@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- from https://bootsnipp.com/snippets/50Olv - modified slightly to center login and create account buttons -->
+<div class="container">
+    <div class="row">
+        <div class='col-md-3'></div>
+        <div class="col-md-6">
+            <div class="login-box well" style='align-text: center;'>
+                    <form action="">
+                        <legend>Sign Up</legend>
+                        <div class="form-group">
+                            <label for="username-email">Username</label>
+                            <input value='' id="username" placeholder="Username" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="username-email">E-mail</label>
+                            <input value='' id="email" placeholder="E-mail" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" value='' placeholder="Password" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input id="confirm-password" value='' placeholder="Confirm Password" type="text" class="form-control" />
+                        </div>
+                        <!-- <div class="input-group">
+                          <div class="checkbox">
+                            <label>
+                              <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                            </label>
+                          </div>
+                        </div> -->
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md " value="Sign Up"/>
+                        </div>
+                        <!-- <span class='text-center'><a href="/resetting/request" class="text-sm">Forgot Password?</a></span> -->
+                        <div class="form-group">
+                            <p class="text-center m-t-xs text-sm">Have an account already?</p> 
+                            <a href="/signin" class="btn btn-default btn-block m-t-md">Log In</a>
+                        </div>
+                    </form>
+                
+            </div>
+        </div>
+        <div class='col-md-3'></div>
+    </div>
+</div>
+{% endblock content %}
