@@ -5,42 +5,32 @@
     <div class="row">
         <div class='col-md-3'></div>
         <div class="col-md-6">
-            <div class="login-box well" style='align-text: center;'>
-                    <form action="">
-                        <legend>Sign Up</legend>
-                        <div class="form-group">
-                            <label for="username-email">Username</label>
-                            <input value='' id="username" placeholder="Username" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="username-email">E-mail</label>
-                            <input value='' id="email" placeholder="E-mail" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input id="password" value='' placeholder="Password" type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm-password">Confirm Password</label>
-                            <input id="confirm-password" value='' placeholder="Confirm Password" type="text" class="form-control" />
-                        </div>
-                        <!-- <div class="input-group">
-                          <div class="checkbox">
-                            <label>
-                              <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
-                            </label>
-                          </div>
-                        </div> -->
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md " value="Sign Up"/>
-                        </div>
-                        <!-- <span class='text-center'><a href="/resetting/request" class="text-sm">Forgot Password?</a></span> -->
-                        <div class="form-group">
-                            <p class="text-center m-t-xs text-sm">Have an account already?</p> 
-                            <a href="/signin" class="btn btn-default btn-block m-t-md">Log In</a>
-                        </div>
-                    </form>
-                
+            <div class="login-box well">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <legend>Sign Up</legend>
+                    <div class="form-group">
+                        {{ form.first_name.label }}
+                        {{ form.first_name(class = "form-control", placeholder="First Name (Optional)")}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.last_name.label }}
+                        {{ form.last_name(class = "form-control", placeholder="Last Name (Optional)")}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label }}
+                        {{ form.email(class = "form-control", placeholder="Email")}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label }}
+                        {{ form.password(class = "form-control", placeholder="Password")}}
+                    </div>
+                    {{ form.submit_button(class = "btn btn-primary btn-block") }}
+                    <div class="form-group">
+                        <p class="text-center m-t-xs text-sm">Have an account already?</p> 
+                        <a href="/signin" class="btn btn-default btn-block m-t-md">Log In</a>
+                    </div>
+                </form>
             </div>
         </div>
         <div class='col-md-3'></div>
