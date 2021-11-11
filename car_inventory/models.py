@@ -9,10 +9,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Import for Secrets Module (Given by Python)
 import secrets
 
+from flask_login import LoginManager, UserMixin
+from flask_marshmallow import Marshmallow
+
 db = SQLAlchemy()
+loginManager = LoginManager()
+ma = Marshmallow()
 
+@loginManager.user_loader
+def loadUser(user_id):
+    return User.query.get(user_id)
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.String, primary_key = True)
     first_name = db.Column(db.String(150), nullable = True, default='')
     last_name = db.Column(db.String(150), nullable = True, default = '')
@@ -44,3 +52,31 @@ class User(db.Model):
 
     def __repr__(self):
         return f'User {self.email} has been added to the database'
+
+class Car(db.Model):
+    id = db.Column(db.String, primary_key=True)
+    make = db.Column(db.String(150), nullable=False)
+    model = db.Column(db.String(150), nullable=False)
+    year = db.Column(db.String(150), nullable=False)
+    topSpeed= db.Column(db.String(150), nullable=True)
+    value = db.Column(db.Numeric(precision=15, scale=2), nullable=False)
+    mileage = db.Column(db.Integer, nullable=False, default=0)
+
+    def __init__(self, make, model, year, topSpeed, value, mileage):
+        self.id = self.set_id()
+        self.make = make
+        self.model = model
+        self.year = year
+        self.topSpeed = topSpeed
+        self.value = value
+        self.mileage = mileage
+
+    def set_id(self):
+        return str(uuid.uuid4())
+
+class CarSchema(ma.Schema):
+    class Meta:
+        fields = ['id', 'make', 'model', 'year', 'topSpeed','value','mileage']
+
+car_schema = CarSchema()
+cars_schema = CarSchema(many=True)
