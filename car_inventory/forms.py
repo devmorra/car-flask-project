@@ -17,4 +17,11 @@ class UserSignupForm(FlaskForm):
     submit_button = SubmitField()
 
 class CarAddForm(FlaskForm):
-    pass
+    make = StringField('make', validators=[DataRequired()])
+    model = StringField('model', validators=[DataRequired()])
+    year = StringField('year', validators=[DataRequired()])
+    topSpeed = StringField('topSpeed', validators=[DataRequired()])
+    value = StringField('value', validators=[DataRequired()])
+    mileage = StringField('mileage', validators=[DataRequired()])
+    submit_button = SubmitField()
+    

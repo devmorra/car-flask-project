@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, flash
+from car_inventory.forms import CarAddForm
 from car_inventory.helpers import token_required
 from car_inventory.models import db, User, Car, car_schema, cars_schema
 
@@ -9,7 +10,7 @@ api = Blueprint('api', __name__, url_prefix='/api' )
 def getData(current_user_token):
     return {'some': 'value'}
 
-@api.route('/cars', methods=['POST'])
+@api.route('/cars', methods=['GET', 'POST'])
 @token_required
 def createCar(current_user_token):
     make = request.json['make']
@@ -19,24 +20,50 @@ def createCar(current_user_token):
     value = request.json['value']
     mileage = request.json['mileage']
     user_token = current_user_token.token
-    
     car = Car(make, model, year, topSpeed, value, mileage, user_token)
-
     db.session.add(car)
     db.session.commit()
-
     response = car_schema.dump(car)
     return jsonify(response)
 
+# @api.route('/mycars', methods=['POST'])
+# def createMyCar(current_user_token):
+#     form = CarAddForm()
+#     try:
+#         if request.method == 'POST' and form.validate_on_submit():
+#             make = form.make.data['make']
+#             model = form.model.data['model']
+#             year = form.year.data['year']
+#             topSpeed = form.topSpeed.data['topSpeed']
+#             value = form.value.data['value']
+#             mileage = form.mileage.data['mileage']
+#             user_token = current_user_token.token
+#             car = Car(make, model, year, topSpeed, value, mileage, user_token)
+#             db.session.add(car)
+#             db.session.commit()
+#             response = car_schema.dump(car)
+#             # return jsonify(response)
+#     except:
+#         raise Exception('Invalid Form Data: Please Check your form.')
+    
 
 # RETRIEVE ALL CARS ENDPOINT
 @api.route('/cars', methods = ['GET'])
 @token_required
 def getCars(current_user_token):
+    print(current_user_token)
+    flash("test")
     owner = current_user_token.token
     cars = Car.query.filter_by(user_token = owner).all()
     response = cars_schema.dump(cars)
     return jsonify(response)
+
+@api.route('/mycars', methods = ['GET'])
+def getMyCars(current_user_token):
+    owner = current_user_token.token
+    cars = Car.query.filter_by(user_token = owner).all()
+    response = cars_schema.dump(cars)
+    return response
 
 # RETRIEVE ONE Car ENDPOINT
 @api.route('/cars/<id>', methods = ['GET'])
@@ -62,9 +89,7 @@ def updateCar(current_user_token, id):
     car.value = request.json['value']
     car.mileage = request.json['mileage']
     car.user_token = current_user_token.token
-    
     db.session.commit()
-
     response = car_schema.dump(car)
     return jsonify(response)
 

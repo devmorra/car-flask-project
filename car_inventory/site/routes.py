@@ -1,5 +1,9 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required
+from ..api.routes import getMyCars
+from ..forms import CarAddForm
+from flask_login import login_user, logout_user, current_user, login_required
+from car_inventory.models import db, User, Car, car_schema, cars_schema
 
 """
     Note that in the below code,
@@ -17,7 +21,24 @@ site = Blueprint('site', __name__, template_folder='site_templates')
 def home():
     return render_template('index.html')
 
-@site.route('/profile')
+@site.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    return render_template('profile.html')
+    form = CarAddForm()
+    cars = getMyCars(current_user)
+    try:
+        if request.method == 'POST' and form.validate_on_submit():
+            make = form.make.data
+            model = form.model.data
+            year = form.year.data
+            topSpeed = form.topSpeed.data
+            value = form.value.data
+            mileage = form.mileage.data
+            user_token = current_user.token
+            car = Car(make, model, year, topSpeed, value, mileage, user_token)
+            db.session.add(car)
+            db.session.commit()
+            return render_template('profile.html', cars=cars, form = form)
+    except:
+        raise Exception('Invalid Form Data: Please Check your form.')
+    return render_template('profile.html', cars=cars, form = form)
