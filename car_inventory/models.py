@@ -61,8 +61,9 @@ class Car(db.Model):
     topSpeed= db.Column(db.String(150), nullable=True)
     value = db.Column(db.Numeric(precision=15, scale=2), nullable=False)
     mileage = db.Column(db.Integer, nullable=False, default=0)
+    user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable=False)
 
-    def __init__(self, make, model, year, topSpeed, value, mileage):
+    def __init__(self, make, model, year, topSpeed, value, mileage, user_token):
         self.id = self.set_id()
         self.make = make
         self.model = model
@@ -70,6 +71,7 @@ class Car(db.Model):
         self.topSpeed = topSpeed
         self.value = value
         self.mileage = mileage
+        self.user_token = user_token
 
     def set_id(self):
         return str(uuid.uuid4())
