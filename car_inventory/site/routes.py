@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required
-from ..api.routes import getMyCars
+from ..api.routes import getMyCars, getCars
 from ..forms import CarAddForm
 from flask_login import login_user, logout_user, current_user, login_required
 from car_inventory.models import db, User, Car, car_schema, cars_schema
@@ -25,7 +25,7 @@ def home():
 @login_required
 def profile():
     form = CarAddForm()
-    cars = getMyCars(current_user)
+    cars = cars_schema.dump(Car.query.filter_by(user_token = current_user.token).all())
     try:
         if request.method == 'POST' and form.validate_on_submit():
             make = form.make.data
